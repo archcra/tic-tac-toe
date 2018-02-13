@@ -17,7 +17,6 @@ const NAME = 'TIC_TAC_TOE-MCTS_ENGINE';
 const EMAIL = 'archcra@qq.com';
 
 function handleCommand(commandLine) {
-  console.log('commandLine is: ', commandLine)
   var commandArgs = commandLine.split(' ');
   var response = '';
 
@@ -48,8 +47,8 @@ function handleCommand(commandLine) {
 
     case 'go':
       var result = uct.getActionInfo(board, 1200, 1000, false);
-      var response = util.format('info %s', result.info + '\n');
-      response += util.format('bestmove %s', result.action);
+      var response = {info: result.info };
+      response.bestmove  =  result.action;
       break;
 
 
@@ -58,7 +57,6 @@ function handleCommand(commandLine) {
 
       break;
   }
-  console.log('final result is: ', response)
   return response;
 }
 
