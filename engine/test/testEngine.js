@@ -5,8 +5,6 @@ describe('fen2state', function() {
   describe('#indexOf()', function() {
     it('first move', function() {
       var command1 = 'position fen 3/3/3 X';
-      engine.handleCommand(command1);
-      command1 = 'go';
       var response = engine.handleCommand(command1);
 
       assert.deepEqual(response.bestmove, [1, 1]);
@@ -14,8 +12,6 @@ describe('fen2state', function() {
 
     it('first opponent move', function() {
       var command1 = 'position fen 3/1X1/3 O';
-      engine.handleCommand(command1);
-      command1 = 'go';
       var response = engine.handleCommand(command1);
 
       assert.deepEqual(response.bestmove, [2, 2] ); // or [0, 0]
@@ -23,12 +19,20 @@ describe('fen2state', function() {
 
     it('second X move', function() {
       var command1 = 'position fen 3/1X1/2O X';
-      engine.handleCommand(command1);
-      command1 = 'go';
       var response = engine.handleCommand(command1);
 
       assert.deepEqual(response.bestmove, [2, 0]);
     });
+
+    it('third X move for position: 1OX/1XO/3 X', function() {
+      var command1 = 'position fen 1OX/1XO/3 X';
+      var response = engine.handleCommand(command1);
+
+      assert.deepEqual(response.bestmove, [2, 0]);
+    });
+
+
+
 
 
   });

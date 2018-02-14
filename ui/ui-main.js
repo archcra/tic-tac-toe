@@ -190,9 +190,7 @@ function setBoard(position, player) {
 function engineMove(player) {
   var fen = boardToFen(board);
   var command = 'position fen ' + fen + ' ' + player
-  tictactoe_engine.handleCommand(command)
-  command = "go"
-  var result = tictactoe_engine.handleCommand(command)
+  var result =  tictactoe_engine.handleCommand(command)
   console.log('tictactoe-engine: ', result)
 
   // Change the board

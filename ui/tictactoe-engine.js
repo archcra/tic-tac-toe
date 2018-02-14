@@ -1050,6 +1050,7 @@ function handleCommand(commandLine) {
       break;
 
     case 'position':
+      console.log('command line: ', commandLine)
       if (commandArgs[1].toLowerCase() == 'fen' && commandArgs.length >= 4) {
         var color;
         if (commandArgs[3] == 'X') {
@@ -1058,18 +1059,14 @@ function handleCommand(commandLine) {
           color = 1;
         }
         board.setup(commandArgs[2], color);
+        var result = uct.getActionInfo(board, 120, 1000, false);
+        var response = {info: result.info };
+        response.bestmove  =  result.action;
 
       } else {
         response = util.format('NOT SUPPORTED: %s', commandLine);
       }
       break;
-
-    case 'go':
-      var result = uct.getActionInfo(board, 1200, 1000, false);
-      var response = {info: result.info };
-      response.bestmove  =  result.action;
-      break;
-
 
     default:
       response = util.format('NOT SUPPORTED: %s', commandLine);
