@@ -16,18 +16,6 @@ function initBoard() {
 var board = initBoard();
 var player = 'X';
 
-// var fen = '3/3/3'; // Empty and initial board state
-
-// var command = 'position fen ' + fen + ' X'
-// tictactoe_engine.handleCommand(command)
-// command = "go"
-// var result = tictactoe_engine.handleCommand(command)
-// console.log('tictactoe-engine: ', result)
-//
-// board[result.bestmove[0]][result.bestmove[1]] = 'X';
-// drawPieces();
-// drawLines(10, lineColor);
-
 
 engineMove(player);
 drawBoard();

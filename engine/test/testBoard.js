@@ -17,5 +17,22 @@ describe('test board', function() {
       assert.deepEqual(board.getResult(), [0, 1]);
     });
 
+    it('get actions 0: ', function() {
+      var board = new Board()
+
+      ;
+      board.setup('O2/OX1/OX1', 1);
+
+      assert.deepEqual(board.getActions(), []);
+    });
+    it.only('get actions 1: ', function() {
+      var board = new Board()
+
+      ;
+      board.setup('O2/OX1/XX1', 1);
+
+      assert.deepEqual(board.getActions(), [[0,1],[0,2],[1,2],[2,2]]);
+    });
+
   });
 });

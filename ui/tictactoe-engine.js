@@ -849,10 +849,18 @@ Board.prototype.doAction = function(action) {
 };
 
 Board.prototype.getResult = function() {
+  // 过程是，对方走完之后，才开始计分；如X走完了，轮到黑走了，此时可能X已胜，
+
   // TODO: 到底是固定的X[1，0]，还是与active有关？即X win也可能是[0,1] ???
 
-  if (boardHelper.isWinning(players[this.active], this.state)) {
-    return [1, 0];
+
+
+  if (boardHelper.isWinning('X', this.state)) {
+    return [0.0, 1.0]; // 当color=0时
+  }
+
+  if (boardHelper.isWinning('O', this.state)) {
+    return [1.0, 0.0]; // 当color=1时
   }
 
   // 这步需要判断是否结束
@@ -860,6 +868,7 @@ Board.prototype.getResult = function() {
     return [0.5, 0.5]
   }
 
+  console.log("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 };
 
 module.exports = Board;
@@ -906,6 +915,11 @@ function initBoard() {
 
 
 function getActions(state) {
+  // If is win, then return empty
+  if (isWinning('X', state) || isWinning('O', state) ){
+    return [];
+  }
+
   // Same as get un-occupied locations
   var actions = [];
 
@@ -1050,7 +1064,6 @@ function handleCommand(commandLine) {
       break;
 
     case 'position':
-      console.log('command line: ', commandLine)
       if (commandArgs[1].toLowerCase() == 'fen' && commandArgs.length >= 4) {
         var color;
         if (commandArgs[3] == 'X') {
@@ -1058,11 +1071,20 @@ function handleCommand(commandLine) {
         } else {
           color = 1;
         }
-        board.setup(commandArgs[2], color);
-        var result = uct.getActionInfo(board, 120, 1000, false);
-        var response = {info: result.info };
-        response.bestmove  =  result.action;
 
+        board.setup(commandArgs[2], color);
+        var response = {};
+
+        // 如果是胜局，或满局，就不要计算了
+        if (board.getActions().length == 0) {
+          response.info = '没法算了';
+          response.bestmove = [-1, -1];
+        }else{
+
+          var result = uct.getActionInfo(board, 1200, 1000, false);
+          response.info = result.info
+          response.bestmove = result.action;
+        }
       } else {
         response = util.format('NOT SUPPORTED: %s', commandLine);
       }

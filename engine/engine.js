@@ -31,7 +31,6 @@ function handleCommand(commandLine) {
       break;
 
     case 'position':
-      console.log('command line: ', commandLine)
       if (commandArgs[1].toLowerCase() == 'fen' && commandArgs.length >= 4) {
         var color;
         if (commandArgs[3] == 'X') {
@@ -40,12 +39,19 @@ function handleCommand(commandLine) {
           color = 1;
         }
 
-        console.log('board color is: ', color)
         board.setup(commandArgs[2], color);
-        var result = uct.getActionInfo(board, 1200, 1000, false);
-        var response = {info: result.info };
-        response.bestmove  =  result.action;
+        var response = {};
 
+        // 如果是胜局，或满局，就不要计算了
+        if (board.getActions().length == 0) {
+          response.info = '没法算了';
+          response.bestmove = [-1, -1];
+        }else{
+
+          var result = uct.getActionInfo(board, 1200, 1000, false);
+          response.info = result.info
+          response.bestmove = result.action;
+        }
       } else {
         response = util.format('NOT SUPPORTED: %s', commandLine);
       }

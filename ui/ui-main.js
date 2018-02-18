@@ -11,23 +11,6 @@ canvas.width = canvasSize;
 canvas.height = canvasSize;
 context.translate(0.5, 0.5);
 
-// function getInitialBoard(defaultValue) {
-//   var board = [];
-//
-//   for (var x = 0; x < 3; x++) {
-//     board.push([]);
-//
-//     for (var y = 0; y < 3; y++) {
-//       board[x].push(defaultValue);
-//     }
-//   }
-//
-//   return board;
-// }
-//
-// var board = getInitialBoard("");
-//
-
 function getPosition(mouse) {
   var xCordinate;
   var yCordinate;
@@ -105,7 +88,7 @@ function drawO(xCordinate, yCordinate) {
 }
 
 function drawX(xCordinate, yCordinate) {
-  context.strokeStyle = "#f1be32";
+  context.strokeStyle = '#ff00ff' // "#f1be32";
 
   context.beginPath();
 
@@ -163,12 +146,10 @@ canvas.addEventListener('mouseup', function(event) {
   var canvasMousePosition = getCanvasMousePosition(event);
   // addPlayingPiece(canvasMousePosition);
   var position = getPosition(canvasMousePosition);
-  console.log('position is: ', position, 'click player is: ', player)
 
   setBoard(position, player);
   drawBoard();
   player = getOpponent(player);
-  console.log('engine player is: ', player)
 
   // Make some waiting ...
   engineMove(player);
@@ -190,11 +171,14 @@ function setBoard(position, player) {
 function engineMove(player) {
   var fen = boardToFen(board);
   var command = 'position fen ' + fen + ' ' + player
-  var result =  tictactoe_engine.handleCommand(command)
-  console.log('tictactoe-engine: ', result)
+  var result = tictactoe_engine.handleCommand(command)
 
   // Change the board
-  board[result.bestmove[0]][result.bestmove[1]] = player;
+  if (result.bestmove[0] !== -1) {
+    board[result.bestmove[0]][result.bestmove[1]] = player;
+  } else {
+    console.log('有情况：', result.info)
+  }
 
 }
 

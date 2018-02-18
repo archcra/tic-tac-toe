@@ -39,6 +39,11 @@ function initBoard() {
 
 
 function getActions(state) {
+  // If is win, then return empty
+  if (isWinning('X', state) || isWinning('O', state) ){
+    return [];
+  }
+
   // Same as get un-occupied locations
   var actions = [];
 
